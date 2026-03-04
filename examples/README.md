@@ -1,10 +1,22 @@
-# 示例代码
+# 示例代码索引
 
-当前示例：
-- `basic/ThreadPoolQuickDemo.java`：线程池快速示例（L1/L2 都会用到）
+## L1 初级
+- `l1/ValuePassingDemo.java`：值传递与引用对象修改示例
+- `basic/ThreadPoolQuickDemo.java`：线程池快速上手
 
-建议后续按主题补充：
-- `jvm/`：内存与 GC 相关示例
-- `mysql/`：索引与 SQL 优化示例
-- `redis/`：缓存模式示例
-- `spring/`：事务与 AOP 示例
+## L2 中级
+- `l2/ThreadPoolSizingDemo.java`：线程池参数与运行指标观察
+- `l2/CacheAsideDemo.java`：缓存旁路模式（Cache Aside）最小实现
+
+## L3 高级
+- `l3/IdempotencyTokenDemo.java`：幂等 token 去重与 TTL 过期演示
+
+## 使用方式
+
+在项目根目录执行：
+
+```bash
+javac examples/l1/ValuePassingDemo.java && java -cp examples/l1 ValuePassingDemo
+```
+
+你也可以替换为其他示例文件路径进行编译运行。

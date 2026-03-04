@@ -27,6 +27,7 @@ flowchart LR
 
 - 总索引：[`docs/README.md`](./docs/README.md)
 - 学习路线：[`docs/00-总览-学习路线.md`](./docs/00-总览-学习路线.md)
+- 调研提炼：[`docs/11-GitHub调研提炼-2026-03-05.md`](./docs/11-GitHub调研提炼-2026-03-05.md)
 - 分层索引：
   - [`docs/L1-初级/README.md`](./docs/L1-初级/README.md)
   - [`docs/L2-中级/README.md`](./docs/L2-中级/README.md)
@@ -47,3 +48,10 @@ flowchart LR
 - `TODO`：已规划，待编写
 - `DOING`：编写中
 - `DONE`：已完成并可复习
+
+## 当前进度
+
+- L1：4 个核心模块已完成
+- L2：4 个核心模块已完成
+- L3：4 个核心模块已完成
+- 可运行示例代码：`examples/`（含 L1/L2/L3）
