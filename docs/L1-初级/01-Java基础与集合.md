@@ -77,3 +77,12 @@ flowchart TD
 
 - [JavaGuide - Java 基础](https://github.com/Snailclimb/JavaGuide/tree/main/docs/java)
 - [toBeBetterJavaer - 基础语法](https://github.com/itwanger/toBeBetterJavaer)
+
+## 深入子章节
+
+- [`11-L1-M1-S01-数据类型与包装类.md`](./11-L1-M1-S01-数据类型与包装类.md)
+- [`12-L1-M1-S02-String与BigDecimal常见坑.md`](./12-L1-M1-S02-String与BigDecimal常见坑.md)
+- [`13-L1-M1-S03-OOP与接口设计基础.md`](./13-L1-M1-S03-OOP与接口设计基础.md)
+- [`14-L1-M1-S04-异常体系与实践.md`](./14-L1-M1-S04-异常体系与实践.md)
+- [`15-L1-M1-S05-泛型与通配符.md`](./15-L1-M1-S05-泛型与通配符.md)
+- [`16-L1-M1-S06-集合选型与复杂度.md`](./16-L1-M1-S06-集合选型与复杂度.md)
