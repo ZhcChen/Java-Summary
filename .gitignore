@@ -1,0 +1,10 @@
+# Java build artifacts
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# macOS
+.DS_Store
