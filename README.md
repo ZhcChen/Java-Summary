@@ -28,6 +28,8 @@ flowchart LR
 - 总索引：[`docs/README.md`](./docs/README.md)
 - 学习路线：[`docs/00-总览-学习路线.md`](./docs/00-总览-学习路线.md)
 - 调研提炼：[`docs/11-GitHub调研提炼-2026-03-05.md`](./docs/11-GitHub调研提炼-2026-03-05.md)
+- 六周执行计划：[`docs/12-六周学习执行计划.md`](./docs/12-六周学习执行计划.md)
+- 题库编号规则：[`docs/13-面试题库编号与复习规则.md`](./docs/13-面试题库编号与复习规则.md)
 - 分层索引：
   - [`docs/L1-初级/README.md`](./docs/L1-初级/README.md)
   - [`docs/L2-中级/README.md`](./docs/L2-中级/README.md)
