@@ -33,6 +33,7 @@ flowchart LR
 - 最终汇总：[`docs/14-最终汇总-从基础到高级完成版.md`](./docs/14-最终汇总-从基础到高级完成版.md)
 - P0/P1 速记卡：[`docs/15-P0-P1速记卡-可打印版.md`](./docs/15-P0-P1速记卡-可打印版.md)
 - 30 分钟模拟脚本：[`docs/16-30分钟模拟面试脚本.md`](./docs/16-30分钟模拟面试脚本.md)
+- 个人台词模板：[`docs/17-个人面试实战台词模板.md`](./docs/17-个人面试实战台词模板.md)
 - 分层索引：
   - [`docs/L1-初级/README.md`](./docs/L1-初级/README.md)
   - [`docs/L2-中级/README.md`](./docs/L2-中级/README.md)
