@@ -1,196 +1,198 @@
-# L1-03 Spring Boot + MySQL + Redis 开发主线
+# L1-03 SpringBoot + MySQL + Redis 开发主线
 
-## 这是什么
+> 本章目标：把“写接口”变成一个完整工程链路，而不是只会写 Controller。
 
-这章把“后端日常开发主链路”串起来：
-- Web 接口开发（Spring Boot）
-- 持久化（MySQL）
-- 缓存提速（Redis）
+## 本章定位
 
-## 主链路流程图
-
-```mermaid
-sequenceDiagram
-    participant C as Client
-    participant A as App(Spring Boot)
-    participant R as Redis
-    participant M as MySQL
-
-    C->>A: HTTP 请求
-    A->>R: 先查缓存
-    alt 缓存命中
-        R-->>A: 返回数据
-    else 缓存未命中
-        A->>M: 查询数据库
-        M-->>A: 返回结果
-        A->>R: 写入缓存
-    end
-    A-->>C: 返回响应
-```
-
-## 关键知识点
-
-### 1) Spring Boot 基础
-
-- 分层结构：Controller / Service / Repository
-- 参数校验：`@Valid`
-- 异常处理：`@RestControllerAdvice`
-
-### 2) MySQL 基础
-
-- 索引本质：减少扫描行数
-- 事务 ACID 与隔离级别
-- `EXPLAIN` 看执行计划
-
-### 3) Redis 基础
-
-- 常用结构：String、Hash、List、Set、ZSet
-- 典型模式：Cache Aside（旁路缓存）
-
-示例：[`../../examples/l2/CacheAsideDemo.java`](../../examples/l2/CacheAsideDemo.java)
-
-## 常见误区
-
-- 误区 1：有索引就一定快。  
-  实际：回表、低选择性、函数操作列都可能导致慢查询。
-- 误区 2：缓存更新必须“先删缓存再更数据库”。  
-  实际：更常见推荐是“先更新数据库再删缓存”。
-
-## 高频面试题
-
-### Q1：为什么要用 Redis 缓存？
-
-答题骨架：
-1. 目标：降低数据库压力、缩短响应时间。
-2. 手段：热点数据缓存、减少重复查询。
-3. 风险：一致性问题、缓存穿透/击穿/雪崩。
-4. 方案：限流、布隆过滤、互斥重建、多级缓存。
-
-### Q2：事务隔离级别怎么选？
-
-答题骨架：
-1. 先说四个隔离级别。
-2. 明确默认级别（MySQL InnoDB：`REPEATABLE READ`）。
-3. 按业务一致性要求与性能成本权衡。
-
-## 延伸阅读
-
-- [JavaGuide - 数据库](https://github.com/Snailclimb/JavaGuide/tree/main/docs/database)
-- [JavaGuide - Redis](https://github.com/Snailclimb/JavaGuide/tree/main/docs/database/redis)
-
+- 你将学会：请求从入口到存储再到缓存的完整路径。
+- 你将避免：分层混乱、异常四处散落、缓存使用无策略。
+- 你将产出：1 条可运行的最小链路（Controller -> Service -> DB/Cache 模拟）。
 
 ## 前置知识
 
-- 理解 HTTP 请求流程。
 - 会写基础 Java 类。
+- 知道 HTTP 请求与响应的概念。
+- 知道 MySQL/Redis 分别用于持久化与缓存。
 
-## 术语解释（零基础友好）
+## 学习路径（建议顺序）
 
-- **分层**：按职责拆分控制层、业务层、数据层。
-- **治理**：统一规范和监控确保可维护。
+1. 先建立分层结构：Controller / Service / Repository。
+2. 再补统一异常与参数校验，保证接口稳定输出。
+3. 最后引入 Redis 旁路缓存，理解读写路径与一致性风险。
 
-## 详细学习步骤（从不会到会）
+## 一、分层开发：先把职责划清
 
-1. 先搭最小功能链路。
-2. 抽离公共校验和异常处理。
-3. 验证扩展时对旧代码影响最小。
+### Controller 层
 
-## 常见错误与纠偏
+- 负责接收参数、调用服务、返回结果。
+- 不承担复杂业务逻辑。
 
-- 职责边界混乱。
-- 公共逻辑重复分散。
+### Service 层
 
-## 学习动作
+- 负责业务规则、流程编排。
+- 连接 Controller 和数据层。
 
-- 先手敲一次示例代码，确保可以独立运行。
-- 用自己的话复述“定义 -> 原理 -> 场景 -> 边界”。
-- 把本节关键结论写成 3 句速记卡，第二天复盘。
+### Repository 层
 
-## 练习任务（建议动手）
+- 负责和存储系统交互（MySQL/Redis）。
+- 不处理业务策略。
 
-1. 按三层实现一个查询接口。
-2. 补充统一异常处理并验证返回格式。
+## 二、MySQL 与 Redis 的角色分工
 
-## 练习参考方向
-
-- 分层目标是降低维护成本与认知负担。
-
-## 复习检查
-
-- [ ] 能在 90 秒内说明本节核心结论
-- [ ] 能独立运行并解释示例代码输出
-- [ ] 能说出至少 1 个常见错误与修正方式
-
-
-## 错答示例 -> 修正答法 -> 打分差异（章级题解）
-
-### 练习题目（围绕本章：SpringBoot-MySQL-Redis开发主线）
-
-- 请用 90 秒说明“定义 -> 原理 -> 场景 -> 风险 -> 验证”完整答题链路。
-- 请补充至少 1 个线上或项目中的落地例子，并说明为什么这样做。
-
-### 常见错答示例（低分版）
-
-- 只说概念，不说机制：例如只背定义，无法解释底层流程。
-- 只说优点，不说边界：没有说明适用条件与失败场景。
-- 没有指标验证：讲完方案后不给量化结果或回归口径。
-
-### 修正答法（高分版）
-
-1. 先给结论：一句话说清本章知识点解决什么问题。
-2. 再讲原理：用 2~3 个关键机制串起完整流程。
-3. 再落场景：给出一个可复现的业务场景和方案选择理由。
-4. 再说风险：列出至少 2 个常见坑和对应防护动作。
-5. 最后验证：给出可观测指标（如延迟、错误率、吞吐、资源占用）与目标阈值。
-
-### 打分差异示例（同题对比）
-
-| 评分维度 | 错答（低分） | 修正（高分） | 提升点 |
+| 组件 | 角色 | 典型优点 | 常见风险 |
 |---|---|---|---|
-| 概念准确 | 只背术语 | 术语 + 边界条件 | 避免概念混淆 |
-| 原理完整 | 断点式描述 | 链路化描述 | 解释能力更强 |
-| 场景匹配 | 空泛举例 | 贴近业务约束 | 方案更可信 |
-| 风险意识 | 不提失败 | 提供兜底与回滚 | 工程可落地 |
-| 验证闭环 | 无量化指标 | 指标 + 阈值 + 回归 | 可复盘可验收 |
+| MySQL | 权威数据源 | 事务能力强、数据可靠 | 高并发读压力大 |
+| Redis | 热点缓存层 | 访问速度快、减轻 DB 压力 | 一致性和过期策略需要设计 |
 
-### 自测动作
+### 常用读流程（Cache Aside）
 
-- 录音 90 秒复述本章答案，回听是否覆盖五段结构。
-- 对照本章“复习检查”逐条打分，低于 80 分重答。
-- 把本章答案压缩成 5 句话，训练高压场景下的表达稳定性。
+1. 先查缓存。
+2. 缓存命中直接返回。
+3. 缓存未命中查数据库。
+4. 回写缓存并返回结果。
+
+## 三、接口稳定性的三件事
+
+1. **参数校验**：避免脏数据进入业务层。
+2. **统一异常**：避免前端拿到不一致错误格式。
+3. **统一响应**：成功与失败结构一致，便于联调与监控。
+
+## 四、常见误区与修正
+
+### 误区 1：缓存更新“先删缓存再改数据库”
+
+修正：在大多数业务里，更常见实践是“先更新数据库，再删缓存”，减少脏读窗口。
+
+### 误区 2：把 SQL 写在 Controller
+
+修正：Controller 只做输入输出边界，SQL 与业务规则分层管理。
+
+### 误区 3：只关注功能是否可用
+
+修正：还要关注失败路径：缓存不可用怎么办？数据库慢怎么办？
+
+## 五、练习任务
+
+1. 设计一个“查询用户详情”接口，画出三层调用链。
+2. 为该接口补一个缓存读流程（命中与未命中都覆盖）。
+3. 增加统一异常返回结构（包含错误码和提示信息）。
+
+## 六、错答与修正（章级题解）
+
+### 题目
+
+为什么在后端开发中常用 MySQL + Redis 组合？
+
+### 错答示例（低分）
+
+- “因为 Redis 快，所以都放 Redis 就行。”
+
+### 修正答法（高分）
+
+1. 先定义角色：MySQL 是权威存储，Redis 是性能层。
+2. 再说原理：热点读走缓存，降低 DB 压力。
+3. 再说边界：缓存失效、一致性、过期策略都需要设计。
+
+### 打分差异
+
+| 维度 | 低分答法 | 高分答法 |
+|---|---|---|
+| 结构完整 | 单点结论 | 角色 + 原理 + 边界 |
+| 工程意识 | 不提失败路径 | 说明一致性与降级 |
+| 可落地性 | 没有流程 | 给出读写流程与策略 |
 
 ## Java 示例代码（含注释，可直接运行）
-
 
 **建议文件名：** `Main.java`  
 **运行命令：** `javac Main.java && java Main`
 
-**预期输出（示例）：**
-```text
-user-7
-```
-
 ```java
-class UserController {
-    private final UserService userService = new UserService();
-
-    String getUser(Long id) {
-        // Controller 负责入口边界
-        return userService.findNameById(id);
-    }
-}
-
-class UserService {
-    String findNameById(Long id) {
-        // Service 负责业务逻辑
-        return "user-" + id;
-    }
-}
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
+    // 模拟 MySQL（权威数据源）
+    static class UserRepository {
+        private final Map<Long, String> mysql = new HashMap<>();
+
+        UserRepository() {
+            mysql.put(1L, "alice");
+            mysql.put(2L, "bob");
+        }
+
+        String findNameById(Long id) {
+            return mysql.get(id);
+        }
+    }
+
+    // 模拟 Redis 缓存
+    static class UserCache {
+        private final Map<Long, String> redis = new HashMap<>();
+
+        String get(Long id) {
+            return redis.get(id);
+        }
+
+        void put(Long id, String name) {
+            redis.put(id, name);
+        }
+    }
+
+    // 业务层：实现最小 Cache Aside 读流程
+    static class UserService {
+        private final UserRepository repository;
+        private final UserCache cache;
+
+        UserService(UserRepository repository, UserCache cache) {
+            this.repository = repository;
+            this.cache = cache;
+        }
+
+        String getUserName(Long id) {
+            // 1) 先查缓存
+            String cached = cache.get(id);
+            if (cached != null) {
+                return "cache-hit:" + cached;
+            }
+
+            // 2) 缓存未命中，查“数据库”
+            String fromDb = repository.findNameById(id);
+            if (fromDb != null) {
+                // 3) 回写缓存，供下一次命中
+                cache.put(id, fromDb);
+                return "db-hit:" + fromDb;
+            }
+
+            // 4) 数据不存在
+            return "not-found";
+        }
+    }
+
     public static void main(String[] args) {
-        UserController c = new UserController();
-        System.out.println(c.getUser(7L));
+        UserService service = new UserService(new UserRepository(), new UserCache());
+
+        // 第一次读取：缓存未命中，走“数据库”
+        System.out.println(service.getUserName(1L));
+
+        // 第二次读取：命中缓存
+        System.out.println(service.getUserName(1L));
+
+        // 读取不存在用户
+        System.out.println(service.getUserName(9L));
     }
 }
 ```
+
+**预期输出示例：**
+
+```text
+db-hit:alice
+cache-hit:alice
+not-found
+```
+
+## 关联阅读（本仓库）
+
+- [`31-L1-M3-S01-SpringBoot分层开发.md`](./31-L1-M3-S01-SpringBoot分层开发.md)
+- [`33-L1-M3-S03-MySQL索引与事务基础.md`](./33-L1-M3-S03-MySQL索引与事务基础.md)
+- [`35-L1-M3-S05-缓存旁路模式入门.md`](./35-L1-M3-S05-缓存旁路模式入门.md)
