@@ -2,34 +2,38 @@
 
 ## 本章目标
 
-- 理解传统 IO 与 NIO 的基本差异。
-- 会用 `java.nio.file` 写出可靠文件读写逻辑。
-- 避免资源泄漏、编码混乱和路径处理错误。
+- 理解 IO 与 NIO 的主要差异。
+- 掌握文件读写中的编码、资源管理与异常处理要点。
+- 能写出可移植、可维护的基础文件处理逻辑。
 
-## 一、IO 与 NIO 的核心差异
+## 前置知识
 
-- IO：以流（Stream）为中心。
-- NIO：以缓冲区（Buffer）和通道（Channel）为中心。
+- 会使用字符串和集合。
+- 理解异常处理的基本写法。
 
-在业务代码中，最常用的是 `java.nio.file.Path` 与 `Files` 工具类。
+## 核心概念
 
-## 二、文件处理三原则
+1. IO 以流为中心，NIO 以缓冲区/通道为中心。
+2. `Path + Files` 是现代 Java 文件处理常用组合。
+3. `try-with-resources` 能显著降低资源泄漏风险。
 
-1. 始终显式指定字符集（如 UTF-8）。
-2. 使用 `try-with-resources` 自动关闭资源。
-3. 对路径、权限、文件不存在等错误做明确处理。
+## 原理展开
 
-## 三、常见错误
+- 字符编码必须显式指定，否则跨环境容易乱码。
+- 大文件场景不能一把梭 `readAllLines`，应流式处理。
+- 临时文件和中间文件要有清理策略。
 
-- 默认字符集导致跨环境乱码。
-- 手动关闭流时遗漏异常分支。
-- 把大文件一次性全部读入内存。
+## 典型场景
 
-## 四、练习任务
+- 配置文件读取。
+- 导入文件校验与行处理。
+- 日志切分文件分析。
 
-1. 读取一个文本文件，统计行数并输出。
-2. 把输入文本按行去重后写入新文件。
-3. 故意传入不存在路径，验证异常信息可读性。
+## 常见误区
+
+1. 使用平台默认编码。
+2. 手动关闭资源遗漏异常分支。
+3. 一次性读取大文件导致内存压力。
 
 ## Java 示例代码（含注释，可直接运行）
 
@@ -45,14 +49,13 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // 1) 创建临时文件，避免污染工作目录
+        // 创建临时文件，避免污染项目目录
         Path tempFile = Files.createTempFile("java-summary-", ".txt");
 
-        // 2) 显式使用 UTF-8 写入内容
+        // 显式使用 UTF-8，保证跨环境一致
         List<String> linesToWrite = List.of("alpha", "beta", "beta", "gamma");
         Files.write(tempFile, linesToWrite, StandardCharsets.UTF_8);
 
-        // 3) 读取文件并输出行数
         List<String> linesRead = Files.readAllLines(tempFile, StandardCharsets.UTF_8);
         long distinctCount = linesRead.stream().distinct().count();
 
@@ -60,7 +63,7 @@ public class Main {
         System.out.println("lineCount=" + linesRead.size());
         System.out.println("distinctCount=" + distinctCount);
 
-        // 4) 示例结束后删除临时文件，保持环境整洁
+        // 示例结束后清理临时文件
         Files.deleteIfExists(tempFile);
     }
 }
@@ -74,6 +77,17 @@ lineCount=4
 distinctCount=3
 ```
 
-## 返回
+## 练习与自测
 
-- [`README.md`](./README.md)
+1. 读取文件并统计每个单词出现次数。
+2. 写一个“去重后导出新文件”的小工具。
+3. 自测：能否解释为什么要显式指定 UTF-8。
+
+## 本章小结
+
+- 文件处理的稳定性来自细节：编码、资源、异常。
+- NIO 工具类组合能显著提升代码清晰度。
+
+## 下一章
+
+- [`06-并发基础与线程池.md`](./06-并发基础与线程池.md)

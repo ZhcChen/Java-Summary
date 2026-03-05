@@ -2,53 +2,39 @@
 
 ## 本章目标
 
-- 掌握 Java 8 在现代代码中的核心用法。
-- 理解 Lambda、Stream、Optional、java.time 的适用边界。
-- 避免把新特性用成“可读性灾难”。
+- 掌握 Java 8 最核心且高频的语言能力。
+- 了解 Lambda、Stream、Optional、java.time 的适用边界。
+- 避免“链式写法很炫，但团队难维护”的问题。
 
-## 一、Lambda 表达式
+## 前置知识
 
-Lambda 让“行为作为参数”更简洁，典型用于集合处理和回调逻辑。
+- 会使用集合和循环。
+- 理解基础函数式接口概念。
 
-注意：
+## 核心概念
 
-- 复杂逻辑不要硬塞 Lambda，必要时抽成具名方法。
-- 可读性优先于“写得短”。
+1. Lambda：把行为作为参数。
+2. Stream：声明式数据处理链。
+3. Optional：明确可空语义。
+4. java.time：现代时间 API。
 
-## 二、Stream 流式处理
+## 原理展开
 
-常见流程：`filter -> map -> sorted -> collect`
+- Stream 擅长表达“过滤、映射、聚合”逻辑。
+- Optional 解决的是可读性和语义问题，不是性能优化。
+- java.time 相比旧 API 语义更清晰且线程安全。
 
-优势：
+## 典型场景
 
-- 声明式表达，减少样板循环代码。
-- 易于组合数据转换逻辑。
+- 用户列表筛选与格式化。
+- 空值默认策略处理。
+- 时间窗口与超时判断。
 
-风险：
+## 常见误区
 
-- 过度链式调用导致可读性下降。
-- 并行流不是性能银弹，需要结合场景评估。
-
-## 三、Optional
-
-`Optional` 用于表达“可能为空”的语义，减少嵌套判空。
-
-- 适合返回值语义表达。
-- 不建议作为实体类字段长期持有。
-
-## 四、java.time
-
-- `LocalDate`：日期。
-- `LocalDateTime`：日期+时间。
-- `Duration`：时长。
-
-相比旧日期 API，更清晰且线程安全。
-
-## 五、练习任务
-
-1. 把一段 for 循环筛选逻辑改写为 Stream。
-2. 用 Optional 改造三层判空代码。
-3. 用 java.time 计算“订单创建后 30 分钟是否超时”。
+1. 把所有逻辑都写成超长 Stream 链。
+2. Optional 嵌套过深导致可读性变差。
+3. 仍在新项目中使用老旧日期 API。
 
 ## Java 示例代码（含注释，可直接运行）
 
@@ -66,16 +52,15 @@ public class Main {
     public static void main(String[] args) {
         List<String> names = List.of("alice", "", "bob", "carol");
 
-        // Stream: 过滤空字符串 + 转大写
+        // Stream: 过滤空值并做统一转换
         List<String> cleaned = names.stream()
                 .filter(name -> !name.isBlank())
                 .map(String::toUpperCase)
                 .collect(Collectors.toList());
 
-        // Optional: 明确“可能不存在”的默认值
+        // Optional: 用默认值承接空语义
         String displayName = Optional.<String>ofNullable(null).orElse("GUEST");
 
-        // java.time: 计算时间间隔
         LocalDateTime createdAt = LocalDateTime.now().minusMinutes(45);
         boolean timeout = Duration.between(createdAt, LocalDateTime.now()).toMinutes() > 30;
 
@@ -94,6 +79,17 @@ displayName=GUEST
 timeout=true
 ```
 
-## 返回
+## 练习与自测
 
-- [`README.md`](./README.md)
+1. 把 for 循环筛选逻辑改写为 Stream。
+2. 用 Optional 改造一段三层判空代码。
+3. 自测：能否解释“为什么 Optional 不适合做实体字段”。
+
+## 本章小结
+
+- Java 8 不是为了写得更短，而是为了表达更清晰。
+- 新特性要服务业务可读性和维护性。
+
+## 下一章
+
+- [`09-Java9到25关键特性.md`](./09-Java9到25关键特性.md)
