@@ -1,50 +1,33 @@
-# Java Summary（VuePress 文档项目）
+# Java Summary
 
-面向 Java 学习与工程实践的知识库，按三层组织：**基础 -> 进阶 -> 大神**。  
-现在已改为 VuePress 文档项目，可通过侧边栏进行系统化阅读。
+纯 Markdown 文档架构，直接在 GitHub 阅读。  
+目录入口只保留三层：**基础 / 进阶 / 大神**。
 
-## 快速启动（本地预览）
+## 入口导航
 
-```bash
-npm install
-npm run docs:dev
-```
-
-启动后在浏览器访问终端输出的本地地址（通常是 `http://localhost:8080`）。
-
-## 构建静态站点
-
-```bash
-npm run docs:build
-```
-
-构建结果目录：`docs/.vuepress/dist/`
-
-## GitHub Pages 自动部署
-
-项目已内置工作流：[`/.github/workflows/deploy-docs.yml`](./.github/workflows/deploy-docs.yml)  
-推送到 `main` 后会自动构建并发布到 GitHub Pages。
-
-## Vercel 部署（推荐参数）
-
-项目已提供：[`/vercel.json`](./vercel.json)，可直接被 Vercel 识别。  
-如果你在 Vercel 控制台手动配置，请使用：
-
-- Build Command: `npm run build`
-- Output Directory: `docs/.vuepress/dist`
-- Install Command: `npm install`
-
-说明：当前 VuePress `base` 默认是 `/`，适配 Vercel；GitHub Pages 通过环境变量 `VUEPRESS_BASE=/Java-Summary/` 注入。
-
-## 文档入口
-
-- 总索引：[`docs/README.md`](./docs/README.md)
 - 基础：[`docs/基础/README.md`](./docs/基础/README.md)
 - 进阶：[`docs/进阶/README.md`](./docs/进阶/README.md)
 - 大神：[`docs/大神/README.md`](./docs/大神/README.md)
 
-## 结构说明
+## 二级菜单（总览）
 
-- VuePress 配置：[`docs/.vuepress/config.js`](./docs/.vuepress/config.js)
-- 规则约定：[`AGENTS.md`](./AGENTS.md)
-- 示例代码：[`examples/`](./examples/)
+### 基础
+
+- 基础主线（00~11）：语法、集合、基础库、异常、IO、并发、JVM、版本升级、综合练习
+- 基础扩展（L1）：语言与集合 / 并发与 JVM / 工程基础与中间件 / 面试表达训练
+
+### 进阶
+
+- L2 中级：并发调优、JVM 排障、MySQL/Redis/MQ、微服务治理与可观测
+- L3 高级：高并发架构、分布式一致性、稳定性工程、技术治理与架构决策
+
+### 大神
+
+- 方法论与架构决策
+- 复杂系统思维与治理闭环
+- 团队协作与工程文化落地
+- 业务技术对齐与影响力建设
+
+## 规则约定
+
+- [`AGENTS.md`](./AGENTS.md)
