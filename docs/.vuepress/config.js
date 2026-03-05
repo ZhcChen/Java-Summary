@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const docsRoot = path.resolve(__dirname, '..');
+const docsBase = process.env.VUEPRESS_BASE || '/';
 
 function sortNames(names) {
   return names.sort((a, b) => a.localeCompare(b, 'zh-Hans-CN', { numeric: true, sensitivity: 'base' }));
@@ -57,7 +58,8 @@ const rootExtra = listRootMarkdownRoutes().filter((route) => !rootPrimarySet.has
 module.exports = {
   title: 'Java Summary',
   description: '基础 -> 进阶 -> 大神 的 Java 知识体系文档',
-  base: '/Java-Summary/',
+  // 支持不同部署环境复用：Vercel 默认 "/"，GitHub Pages 可注入 "/Java-Summary/"
+  base: docsBase,
   locales: {
     '/': {
       lang: 'zh-CN'

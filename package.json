@@ -4,6 +4,8 @@
   "private": true,
   "description": "Java 知识汇总文档（VuePress）",
   "scripts": {
+    "dev": "npm run docs:dev",
+    "build": "npm run docs:build",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },

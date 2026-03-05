@@ -25,6 +25,17 @@ npm run docs:build
 项目已内置工作流：[`/.github/workflows/deploy-docs.yml`](./.github/workflows/deploy-docs.yml)  
 推送到 `main` 后会自动构建并发布到 GitHub Pages。
 
+## Vercel 部署（推荐参数）
+
+项目已提供：[`/vercel.json`](./vercel.json)，可直接被 Vercel 识别。  
+如果你在 Vercel 控制台手动配置，请使用：
+
+- Build Command: `npm run build`
+- Output Directory: `docs/.vuepress/dist`
+- Install Command: `npm install`
+
+说明：当前 VuePress `base` 默认是 `/`，适配 Vercel；GitHub Pages 通过环境变量 `VUEPRESS_BASE=/Java-Summary/` 注入。
+
 ## 文档入口
 
 - 总索引：[`docs/README.md`](./docs/README.md)

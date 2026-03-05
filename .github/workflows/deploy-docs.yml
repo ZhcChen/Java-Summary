@@ -32,6 +32,8 @@ jobs:
 
       - name: Build docs
         run: npm run docs:build
+        env:
+          VUEPRESS_BASE: /Java-Summary/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
