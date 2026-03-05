@@ -75,3 +75,20 @@ flowchart TD
 
 - [JavaGuide - JVM](https://github.com/Snailclimb/JavaGuide/tree/main/docs/java/jvm)
 - [advanced-java - 高并发](https://github.com/doocs/advanced-java/tree/main/docs/high-concurrency)
+
+## Java 示例代码（含注释）
+
+```java
+public class ThreadSnippet {
+    public static void main(String[] args) throws InterruptedException {
+        Thread t = new Thread(() -> {
+            // 线程执行的业务逻辑
+            System.out.println("worker running");
+        });
+        t.start();
+        // join 保证主线程等待子线程结束
+        t.join();
+    }
+}
+```
+

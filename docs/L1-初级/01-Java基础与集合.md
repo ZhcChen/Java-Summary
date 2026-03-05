@@ -86,3 +86,23 @@ flowchart TD
 - [`14-L1-M1-S04-异常体系与实践.md`](./14-L1-M1-S04-异常体系与实践.md)
 - [`15-L1-M1-S05-泛型与通配符.md`](./15-L1-M1-S05-泛型与通配符.md)
 - [`16-L1-M1-S06-集合选型与复杂度.md`](./16-L1-M1-S06-集合选型与复杂度.md)
+
+## Java 示例代码（含注释）
+
+```java
+import java.util.*;
+
+public class CollectionSnippet {
+    public static void main(String[] args) {
+        // 读多写少场景常优先 ArrayList
+        List<String> list = new ArrayList<>();
+        list.add("A");
+
+        // 键值映射默认优先 HashMap
+        Map<String, Integer> map = new HashMap<>();
+        map.put("k", 1);
+        System.out.println(map.get("k"));
+    }
+}
+```
+

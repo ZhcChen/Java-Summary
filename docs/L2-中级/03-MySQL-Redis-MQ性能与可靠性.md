@@ -59,3 +59,17 @@ flowchart LR
 
 - [advanced-java - 缓存与 MQ](https://github.com/doocs/advanced-java/tree/main/docs/high-concurrency)
 - [JavaGuide - 数据库与消息队列](https://github.com/Snailclimb/JavaGuide/tree/main/docs/database)
+
+## Java 示例代码（含注释）
+
+```java
+public class SqlSnippet {
+    public static void main(String[] args) {
+        // 索引友好写法：避免在索引列上做函数操作
+        String sql = "SELECT id, name FROM user WHERE phone = ?";
+        // 实战中用 EXPLAIN 验证是否命中索引
+        System.out.println(sql);
+    }
+}
+```
+

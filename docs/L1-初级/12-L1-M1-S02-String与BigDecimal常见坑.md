@@ -58,3 +58,22 @@ flowchart TD
 - [ ] 能举例说明 `new BigDecimal(0.1)` 的问题
 - [ ] 能说明 StringBuilder 使用场景
 - [ ] 能口述金额计算规范
+
+## Java 示例代码（含注释）
+
+```java
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+public class MoneySnippet {
+    public static void main(String[] args) {
+        // 金额场景使用字符串构造，避免二进制浮点误差
+        BigDecimal amount = new BigDecimal("10.00");
+        BigDecimal tax = new BigDecimal("0.06");
+        // 显式指定舍入规则，避免不可控行为
+        BigDecimal total = amount.multiply(tax).setScale(2, RoundingMode.HALF_UP);
+        System.out.println(total);
+    }
+}
+```
+

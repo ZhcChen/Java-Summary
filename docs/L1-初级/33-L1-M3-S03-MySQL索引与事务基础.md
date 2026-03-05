@@ -46,3 +46,17 @@ flowchart LR
 - [ ] 能在 90 秒内说明核心结论
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
+
+## Java 示例代码（含注释）
+
+```java
+public class SqlSnippet {
+    public static void main(String[] args) {
+        // 索引友好写法：避免在索引列上做函数操作
+        String sql = "SELECT id, name FROM user WHERE phone = ?";
+        // 实战中用 EXPLAIN 验证是否命中索引
+        System.out.println(sql);
+    }
+}
+```
+

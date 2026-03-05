@@ -46,3 +46,21 @@ flowchart LR
 - [ ] 能在 90 秒内说明核心结论
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
+
+## Java 示例代码（含注释）
+
+```java
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class CacheAsideSnippet {
+    static final Map<String, String> cache = new ConcurrentHashMap<>();
+    static final Map<String, String> db = new ConcurrentHashMap<>();
+
+    static String read(String key) {
+        // 先查缓存，未命中再回源数据库并回填
+        return cache.computeIfAbsent(key, k -> db.get(k));
+    }
+}
+```
+

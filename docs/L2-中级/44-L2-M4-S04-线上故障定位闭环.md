@@ -46,3 +46,18 @@ flowchart LR
 - [ ] 能在 90 秒内说明核心结论
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
+
+## Java 示例代码（含注释）
+
+```java
+import java.util.UUID;
+
+public class TraceSnippet {
+    public static void main(String[] args) {
+        // traceId 贯穿日志、指标和链路追踪
+        String traceId = UUID.randomUUID().toString();
+        System.out.println("traceId=" + traceId + " service=order msg=start");
+    }
+}
+```
+

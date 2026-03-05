@@ -46,3 +46,24 @@ flowchart LR
 - [ ] 能在 90 秒内说明核心结论
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
+
+## Java 示例代码（含注释）
+
+```java
+public class VolatileSnippet {
+    private static volatile boolean running = true;
+
+    public static void main(String[] args) throws InterruptedException {
+        new Thread(() -> {
+            while (running) {
+                // volatile 保证可见性，不保证复合操作原子性
+            }
+            System.out.println("stopped");
+        }).start();
+
+        Thread.sleep(100);
+        running = false;
+    }
+}
+```
+

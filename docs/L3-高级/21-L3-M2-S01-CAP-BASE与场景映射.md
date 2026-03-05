@@ -46,3 +46,21 @@ flowchart LR
 - [ ] 能在 90 秒内说明核心结论
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
+
+## Java 示例代码（含注释）
+
+```java
+public class SagaSnippet {
+    public static void main(String[] args) {
+        boolean stockReserved = true;
+        boolean paySuccess = false;
+
+        // 本地事务成功后，跨服务失败需要补偿
+        if (stockReserved && !paySuccess) {
+            // 补偿动作：回滚库存
+            System.out.println("compensate stock");
+        }
+    }
+}
+```
+

@@ -61,3 +61,17 @@ flowchart LR
 
 - [JavaGuide - JVM](https://github.com/Snailclimb/JavaGuide/tree/main/docs/java/jvm)
 - [source-code-hunter - JDK/JVM 相关](https://github.com/doocs/source-code-hunter/tree/main/docs/JDK)
+
+## Java 示例代码（含注释）
+
+```java
+public class JvmMemorySnippet {
+    public static void main(String[] args) {
+        int local = 1; // 栈上局部变量
+        byte[] bytes = new byte[1024]; // 堆上对象
+        // 类元数据位于方法区（JDK8+ 为元空间）
+        System.out.println(local + bytes.length);
+    }
+}
+```
+

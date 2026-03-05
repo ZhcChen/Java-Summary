@@ -46,3 +46,24 @@ flowchart LR
 - [ ] 能在 90 秒内说明核心结论
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
+
+## Java 示例代码（含注释）
+
+```java
+class UserController {
+    private final UserService userService = new UserService();
+
+    String getUser(Long id) {
+        // Controller 负责请求入口与参数边界
+        return userService.findNameById(id);
+    }
+}
+
+class UserService {
+    String findNameById(Long id) {
+        // Service 承载业务编排与规则
+        return "user-" + id;
+    }
+}
+```
+

@@ -77,3 +77,24 @@ sequenceDiagram
 
 - [JavaGuide - 数据库](https://github.com/Snailclimb/JavaGuide/tree/main/docs/database)
 - [JavaGuide - Redis](https://github.com/Snailclimb/JavaGuide/tree/main/docs/database/redis)
+
+## Java 示例代码（含注释）
+
+```java
+class UserController {
+    private final UserService userService = new UserService();
+
+    String getUser(Long id) {
+        // Controller 负责请求入口与参数边界
+        return userService.findNameById(id);
+    }
+}
+
+class UserService {
+    String findNameById(Long id) {
+        // Service 承载业务编排与规则
+        return "user-" + id;
+    }
+}
+```
+
