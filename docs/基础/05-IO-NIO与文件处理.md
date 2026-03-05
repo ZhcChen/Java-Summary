@@ -2,38 +2,34 @@
 
 ## 本章目标
 
-- 理解 IO 与 NIO 的主要差异。
-- 掌握文件读写中的编码、资源管理与异常处理要点。
-- 能写出可移植、可维护的基础文件处理逻辑。
+- 理解 IO 与 NIO 在工程中的适用边界。
+- 掌握编码、资源关闭、流式处理的关键实践。
+- 能写出可移植、可维护的文件处理代码。
 
 ## 前置知识
 
-- 会使用字符串和集合。
-- 理解异常处理的基本写法。
+- 会用字符串和集合。
+- 知道异常处理的基本写法。
+- 理解“读取 -> 处理 -> 输出”的流程。
 
-## 核心概念
+## 一、IO 与 NIO 怎么理解
 
-1. IO 以流为中心，NIO 以缓冲区/通道为中心。
-2. `Path + Files` 是现代 Java 文件处理常用组合。
-3. `try-with-resources` 能显著降低资源泄漏风险。
+### 1) 两种模型的差异
 
-## 原理展开
+- **IO（Stream）**：以输入流/输出流为中心，概念简单，适合基础场景。
+- **NIO（Channel + Buffer + Path/Files）**：工具更现代，组合性更好，更适合工程代码。
 
-- 字符编码必须显式指定，否则跨环境容易乱码。
-- 大文件场景不能一把梭 `readAllLines`，应流式处理。
-- 临时文件和中间文件要有清理策略。
+### 2) 真实项目里常见做法
 
-## 典型场景
+- 文本文件优先 `Path + Files + BufferedReader`。
+- 小文件可一次性读取，大文件必须流式处理。
+- 所有字符读写都显式指定 UTF-8。
 
-- 配置文件读取。
-- 导入文件校验与行处理。
-- 日志切分文件分析。
+## 二、文件处理三条硬规则
 
-## 常见误区
-
-1. 使用平台默认编码。
-2. 手动关闭资源遗漏异常分支。
-3. 一次性读取大文件导致内存压力。
+1. **编码显式指定**：避免跨环境乱码。
+2. **资源自动关闭**：优先 `try-with-resources`。
+3. **中间结果可观测**：处理行数、错误行数、输出路径要可追踪。
 
 ## Java 示例代码（含注释，可直接运行）
 
@@ -41,30 +37,56 @@
 **运行命令：** `javac Main.java && java Main`
 
 ```java
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // 创建临时文件，避免污染项目目录
-        Path tempFile = Files.createTempFile("java-summary-", ".txt");
+        Path input = Files.createTempFile("java-summary-input-", ".txt");
+        Path output = Files.createTempFile("java-summary-output-", ".txt");
 
-        // 显式使用 UTF-8，保证跨环境一致
-        List<String> linesToWrite = List.of("alpha", "beta", "beta", "gamma");
-        Files.write(tempFile, linesToWrite, StandardCharsets.UTF_8);
+        // 准备一份模拟导入文件（词频统计）
+        Files.write(input,
+                java.util.Arrays.asList("apple", "banana", "apple", "orange", "banana", "apple"),
+                StandardCharsets.UTF_8);
 
-        List<String> linesRead = Files.readAllLines(tempFile, StandardCharsets.UTF_8);
-        long distinctCount = linesRead.stream().distinct().count();
+        Map<String, Integer> counter = new LinkedHashMap<>();
 
-        System.out.println("file=" + tempFile.getFileName());
-        System.out.println("lineCount=" + linesRead.size());
-        System.out.println("distinctCount=" + distinctCount);
+        // try-with-resources: 任何异常分支都能确保资源被关闭
+        try (BufferedReader reader = Files.newBufferedReader(input, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String word = line.trim();
+                if (word.isEmpty()) {
+                    continue;
+                }
+                // merge 简化“存在则+1，不存在则初始化”逻辑
+                counter.merge(word, 1, Integer::sum);
+            }
+        }
 
-        // 示例结束后清理临时文件
-        Files.deleteIfExists(tempFile);
+        // 将统计结果输出到新文件
+        try (BufferedWriter writer = Files.newBufferedWriter(output, StandardCharsets.UTF_8)) {
+            for (Map.Entry<String, Integer> entry : counter.entrySet()) {
+                writer.write(entry.getKey() + "," + entry.getValue());
+                writer.newLine();
+            }
+        }
+
+        System.out.println("inputFile=" + input.getFileName());
+        System.out.println("outputFile=" + output.getFileName());
+        System.out.println("wordKinds=" + counter.size());
+        System.out.println("appleCount=" + counter.get("apple"));
+
+        // 示例结束后清理临时文件，避免污染本地目录
+        Files.deleteIfExists(input);
+        Files.deleteIfExists(output);
     }
 }
 ```
@@ -72,21 +94,51 @@ public class Main {
 **预期输出示例：**
 
 ```text
-file=java-summary-xxxx.txt
-lineCount=4
-distinctCount=3
+inputFile=java-summary-input-xxxx.txt
+outputFile=java-summary-output-xxxx.txt
+wordKinds=3
+appleCount=3
 ```
+
+## 常见误区与修正
+
+1. **误区：默认编码够用了**  
+   修正：默认编码依赖环境，必须显式指定 UTF-8。
+
+2. **误区：小文件写法可直接复制到大文件场景**  
+   修正：大文件应流式处理，避免内存峰值过高。
+
+3. **误区：finally 手动关资源就行**  
+   修正：`try-with-resources` 更安全、可读性更高。
+
+## 面试高频问答
+
+### Q1：`Files.readAllLines` 什么时候不建议使用？
+
+- 一句话结论：在大文件或高并发场景不建议一次性读入内存。
+- 关键点：
+  1. 内存峰值不可控。
+  2. 可能触发频繁 GC。
+  3. 流式读取更稳。
+
+### Q2：为什么推荐 `Path` 而不是 `File`？
+
+- 一句话结论：`Path` + `Files` API 更现代、语义更清晰、组合能力更强。
+- 关键点：
+  1. 与 NIO 生态一致。
+  2. 工具方法丰富。
+  3. 代码可读性更好。
 
 ## 练习与自测
 
-1. 读取文件并统计每个单词出现次数。
-2. 写一个“去重后导出新文件”的小工具。
-3. 自测：能否解释为什么要显式指定 UTF-8。
+1. 将示例扩展为“忽略大小写词频统计”。
+2. 新增错误行收集（如空行、非法字符）并输出报告文件。
+3. 解释：为什么文件处理代码必须显式记录输入、输出和处理条数。
 
 ## 本章小结
 
-- 文件处理的稳定性来自细节：编码、资源、异常。
-- NIO 工具类组合能显著提升代码清晰度。
+- 文件处理稳定性的本质在细节：编码、资源、流式与可观测。
+- NIO 工具链是现代 Java 文件处理主力组合。
 
 ## 下一章
 
