@@ -47,20 +47,26 @@ flowchart LR
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
 
-## Java 示例代码（含注释）
+## Java 示例代码（含注释，可直接运行）
+
+**建议文件名：** `Main.java`  
+**运行命令：** `javac Main.java && java Main`
+
+**预期输出（示例）：**
+```text
+compensate stock
+```
 
 ```java
-public class SagaSnippet {
+public class Main {
     public static void main(String[] args) {
         boolean stockReserved = true;
         boolean paySuccess = false;
 
-        // 本地事务成功后，跨服务失败需要补偿
+        // 分布式步骤失败时执行补偿，保证最终一致
         if (stockReserved && !paySuccess) {
-            // 补偿动作：回滚库存
             System.out.println("compensate stock");
         }
     }
 }
 ```
-

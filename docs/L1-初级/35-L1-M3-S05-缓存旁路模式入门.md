@@ -47,20 +47,38 @@ flowchart LR
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
 
-## Java 示例代码（含注释）
+## Java 示例代码（含注释，可直接运行）
+
+**建议文件名：** `Main.java`  
+**运行命令：** `javac Main.java && java Main`
+
+**预期输出（示例）：**
+```text
+db:v1
+cache:v1
+```
 
 ```java
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CacheAsideSnippet {
+public class Main {
     static final Map<String, String> cache = new ConcurrentHashMap<>();
     static final Map<String, String> db = new ConcurrentHashMap<>();
 
+    public static void main(String[] args) {
+        db.put("user:1", "v1");
+        // Cache Aside：先查缓存，未命中回源并回填
+        System.out.println(read("user:1"));
+        System.out.println(read("user:1"));
+    }
+
     static String read(String key) {
-        // 先查缓存，未命中再回源数据库并回填
-        return cache.computeIfAbsent(key, k -> db.get(k));
+        String v = cache.get(key);
+        if (v != null) return "cache:" + v;
+        v = db.get(key);
+        cache.put(key, v);
+        return "db:" + v;
     }
 }
 ```
-

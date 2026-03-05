@@ -47,23 +47,34 @@ flowchart LR
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
 
-## Java 示例代码（含注释）
+## Java 示例代码（含注释，可直接运行）
+
+**建议文件名：** `Main.java`  
+**运行命令：** `javac Main.java && java Main`
+
+**预期输出（示例）：**
+```text
+worker stopped
+main done
+```
 
 ```java
-public class VolatileSnippet {
+public class Main {
     private static volatile boolean running = true;
 
     public static void main(String[] args) throws InterruptedException {
-        new Thread(() -> {
+        Thread worker = new Thread(() -> {
             while (running) {
-                // volatile 保证可见性，不保证复合操作原子性
+                // volatile 保证主线程写入对这里可见
             }
-            System.out.println("stopped");
-        }).start();
+            System.out.println("worker stopped");
+        });
 
-        Thread.sleep(100);
+        worker.start();
+        Thread.sleep(50);
         running = false;
+        worker.join();
+        System.out.println("main done");
     }
 }
 ```
-

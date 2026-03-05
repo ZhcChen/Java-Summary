@@ -47,17 +47,24 @@ flowchart LR
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
 
-## Java 示例代码（含注释）
+## Java 示例代码（含注释，可直接运行）
+
+**建议文件名：** `Main.java`  
+**运行命令：** `javac Main.java && java Main`
+
+**预期输出（示例）：**
+```text
+traceId=trace-001 service=order msg=start
+traceId=trace-001 service=pay msg=done
+```
 
 ```java
-import java.util.UUID;
-
-public class TraceSnippet {
+public class Main {
     public static void main(String[] args) {
-        // traceId 贯穿日志、指标和链路追踪
-        String traceId = UUID.randomUUID().toString();
+        // traceId 串联日志、指标与链路追踪
+        String traceId = "trace-001";
         System.out.println("traceId=" + traceId + " service=order msg=start");
+        System.out.println("traceId=" + traceId + " service=pay msg=done");
     }
 }
 ```
-

@@ -59,21 +59,34 @@ flowchart TD
 - [ ] 能说明 StringBuilder 使用场景
 - [ ] 能口述金额计算规范
 
-## Java 示例代码（含注释）
+## Java 示例代码（含注释，可直接运行）
+
+**建议文件名：** `Main.java`  
+**运行命令：** `javac Main.java && java Main`
+
+**预期输出（示例）：**
+```text
+text=java
+total=0.60
+```
 
 ```java
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class MoneySnippet {
+public class Main {
     public static void main(String[] args) {
-        // 金额场景使用字符串构造，避免二进制浮点误差
+        // StringBuilder 适合频繁拼接
+        StringBuilder sb = new StringBuilder();
+        sb.append("ja").append("va");
+
+        // 金额场景用字符串构造 BigDecimal，避免浮点误差
         BigDecimal amount = new BigDecimal("10.00");
-        BigDecimal tax = new BigDecimal("0.06");
-        // 显式指定舍入规则，避免不可控行为
-        BigDecimal total = amount.multiply(tax).setScale(2, RoundingMode.HALF_UP);
-        System.out.println(total);
+        BigDecimal ratio = new BigDecimal("0.06");
+        BigDecimal total = amount.multiply(ratio).setScale(2, RoundingMode.HALF_UP);
+
+        System.out.println("text=" + sb);
+        System.out.println("total=" + total);
     }
 }
 ```
-

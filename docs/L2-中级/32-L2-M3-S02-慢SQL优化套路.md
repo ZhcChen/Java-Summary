@@ -47,16 +47,23 @@ flowchart LR
 - [ ] 能说明至少 1 个项目场景
 - [ ] 能回答 1 个追问问题
 
-## Java 示例代码（含注释）
+## Java 示例代码（含注释，可直接运行）
+
+**建议文件名：** `Main.java`  
+**运行命令：** `javac Main.java && java Main`
+
+**预期输出（示例）：**
+```text
+SELECT id, name FROM user WHERE phone = ?
+```
 
 ```java
-public class SqlSnippet {
+public class Main {
     public static void main(String[] args) {
         // 索引友好写法：避免在索引列上做函数操作
         String sql = "SELECT id, name FROM user WHERE phone = ?";
-        // 实战中用 EXPLAIN 验证是否命中索引
+        // 实战中应结合 EXPLAIN 验证执行计划
         System.out.println(sql);
     }
 }
 ```
-
