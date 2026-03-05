@@ -35,7 +35,7 @@ flowchart TD
 
 ## 示例代码
 
-- [`../../examples/l1/StringBigDecimalPitfallsDemo.java`](../../examples/l1/StringBigDecimalPitfallsDemo.java)
+- [`../../../examples/l1/StringBigDecimalPitfallsDemo.java`](../../../examples/l1/StringBigDecimalPitfallsDemo.java)
 
 ## 高频面试题
 

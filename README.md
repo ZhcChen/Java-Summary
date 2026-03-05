@@ -14,12 +14,6 @@
 - 进阶：[`docs/进阶/README.md`](./docs/进阶/README.md)
 - 大神：[`docs/大神/README.md`](./docs/大神/README.md)
 
-## 兼容入口（旧目录）
-
-- [`docs/L1-初级/README.md`](./docs/L1-初级/README.md)
-- [`docs/L2-中级/README.md`](./docs/L2-中级/README.md)
-- [`docs/L3-高级/README.md`](./docs/L3-高级/README.md)
-
 ## 其他文档
 
 - 面试频率索引：[`docs/02-按面试频率索引.md`](./docs/02-按面试频率索引.md)

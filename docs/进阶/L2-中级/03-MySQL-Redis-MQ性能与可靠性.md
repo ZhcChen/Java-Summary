@@ -31,7 +31,7 @@ flowchart LR
 - 缓存问题：穿透、击穿、雪崩。
 - 常见治理：布隆过滤、互斥锁、随机过期、限流降级。
 
-示例：[`../../examples/l2/CacheAsideDemo.java`](../../examples/l2/CacheAsideDemo.java)
+示例：[`../../../examples/l2/CacheAsideDemo.java`](../../../examples/l2/CacheAsideDemo.java)
 
 ### 3) MQ 可靠性
 
