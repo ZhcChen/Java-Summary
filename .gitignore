@@ -1,6 +1,12 @@
 # Java build artifacts
 *.class
 
+# Node / VuePress
+node_modules/
+docs/.vuepress/dist/
+docs/.vuepress/.temp/
+docs/.vuepress/.cache/
+
 # IDE
 .idea/
 *.iml
